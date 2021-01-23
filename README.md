@@ -1,3 +1,45 @@
+# CrewLink for Linux
+
+- Requires running Among Us via Steam, version `2020.12.9`.
+    - Other Steam versions could work, but version detection is not implemented. See `src/main/hook.ts`
+   - The offsets for the itch.io versions have not yet been documented?
+- Uses [my fork of `memoryjs`](https://github.com/zbanks/memoryjs) which implements _just enough_ of the API for CrewLink.
+    - Can't detect if the process quits. If Among Us restarts, restart CrewLink.
+- Doesn't launch Among Us, so there's no parent process relationship; `ptrace` security gets in the way
+- **Please report issues [on this fork's issue tracker](https://github.com/zbanks/CrewLink/issues)**
+
+## Running
+```sh
+wget "https://github.com/zbanks/CrewLink/releases/download/v1.2.1/CrewLink-1.2.1.AppImage"
+chmod +x CrewLink-1.2.1.AppImage
+
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+./CrewLink-1.2.1.AppImage
+```
+
+### Notes
+
+Tested/developed on Ubuntu 16.04.6 LTS
+
+
+
+## Building from source
+
+```
+git clone https://github.com/zbanks/CrewLink
+cd CrewLink
+yarn install 
+
+# Disable ptrace scope security, so we can read the process memory
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
+# Launch CrewLink (Among Us should be already running)
+yarn dev
+```
+----
+
+<br />
+
 [![GPL-3.0 License][license-shield]][license-url] [![Appveyor Build][appveyor-shield]][appveyor-url]
 
 <br />
